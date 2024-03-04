@@ -2,7 +2,10 @@ import React, { useContext, useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import {useSelector,useDispatch} from 'react-redux'
+import { SetAdminProducts } from "../Store/ProductsSlice";
 function AddProducts() {
+  const Dispatch=useDispatch()
   const Nav = useNavigate();
   const [addProduct, setAddproduct] = useState({
     name: "",
@@ -11,7 +14,7 @@ function AddProducts() {
     sex: "",
     image: "",
   });
-
+  const Products =useSelector((state)=>state.AdminProducts)
   const { data, setData } = useContext(UserContext);
   return (
     <div>
@@ -98,7 +101,8 @@ function AddProducts() {
                   addProduct.category !== "" &&
                   addProduct.price !== 0;
                 addProduct.image !== ""
-                  ? setData([...data, addProduct])
+                  // ? setData([...data, addProduct])
+                  ?Dispatch(SetAdminProducts([...Products,addProduct]))
                   : alert("entr the complete details");
                 Nav("/AdminProducts");
               }}

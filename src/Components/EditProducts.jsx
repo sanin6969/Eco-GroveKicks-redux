@@ -1,9 +1,13 @@
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import { Products } from "../PAGES/Data";
+// import { Products } from "../PAGES/Data";
 import { IoMdArrowBack } from "react-icons/io";
+import {useSelector,useDispatch} from 'react-redux'
+import { SetAdminProducts } from "../Store/ProductsSlice";
 function EditProducts() {
+    const Products =useSelector((state)=>state.AdminProducts)
+    const Dispatch=useDispatch()
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
     const [sex, setSex] = useState("");
@@ -11,7 +15,7 @@ function EditProducts() {
     const [price, setPrice] = useState("");
     const Nav = useNavigate();
     const { id } = useParams();
-    const { data, setData } = useContext(UserContext);
+    // const { data, setData } = useContext(UserContext);
 
     const filterProduct = Products.find((e) => e.id == id);
 
@@ -25,7 +29,7 @@ function EditProducts() {
             const updatedprice = price || e.price;
             if (e.id == id) {
                 return {
-                    ...data,
+                    ...Products,
                     id: e.id,
                     image: updatedimage,
                     name: updatedname,
@@ -37,7 +41,8 @@ function EditProducts() {
                 return e;
             }
         });
-        setData(updatedProducts);
+        // setData(updatedProducts);
+        Dispatch(SetAdminProducts(updatedProducts))
         Nav("/AdminProducts");
     };
     return (
